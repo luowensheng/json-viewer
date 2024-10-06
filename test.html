@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        fieldset {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        legend {
+            font-weight: bold;
+            color: #2c3e50;
+            cursor: pointer;
+            user-select: none;
+        }
+        legend::before {
+            content: '▼ ';
+            font-size: 0.8em;
+        }
+        legend.collapsed::before {
+            content: '► ';
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: calc(100% - 18px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            
+        }
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+        .collapsible-content {
+            display: block;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            max-height: 1000px;
+        }
+        .collapsible-content.collapsed {
+            max-height: 0;
+        }
+        .skills-container,
+        .education-container,
+        .projects-container {
+            border: 1px solid #eee;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+        }
+        .skill-entry,
+        .education-entry,
+        .project-entry {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .remove-btn {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px 10px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        .remove-btn:hover {
+            background-color: #c0392b;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <form class="profile-form">
+        <h1>Profile Form</h1>
+
+        <fieldset>
+            <legend>Personal Information</legend>
+            <div class="collapsible-content">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="age">Age:</label>
+                <input type="number" id="age" name="age" min="0" required>
+
+                <label for="isEmployed">
+                    <input type="checkbox" id="isEmployed" name="isEmployed">
+                    Employed
+                </label>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Address</legend>
+            <div class="collapsible-content">
+                <label for="street">Street:</label>
+                <input type="text" id="street" name="address.street" required>
+
+                <label for="city">City:</label>
+                <input type="text" id="city" name="address.city" required>
+
+                <label for="zipCode">Zip Code:</label>
+                <input type="number" id="zipCode" name="address.zipCode" required>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Skills</legend>
+            <div class="collapsible-content">
+                <div class="skills-container" id="skills-container"></div>
+                <button type="button" onclick="addSkill()">Add Skill</button>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Education</legend>
+            <div class="collapsible-content">
+                <div class="education-container" id="education-container"></div>
+                <button type="button" onclick="addEducation()">Add Education</button>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Projects</legend>
+            <div class="collapsible-content">
+                <div class="projects-container" id="projects-container"></div>
+                <button type="button" onclick="addProject()">Add Project</button>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Salary</legend>
+            <div class="collapsible-content">
+                <label for="salary">Salary (optional):</label>
+                <input type="number" id="salary" name="salary" min="0" step="1000">
+            </div>
+        </fieldset>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        function addSkill() {
+            const container = document.getElementById('skills-container');
+            const index = container.children.length;
+            const div = document.createElement('div');
+            div.className = 'skill-entry';
+            div.innerHTML = `
+                <input type="text" name="skills[${index}]" placeholder="Enter a skill">
+                <button type="button" class="remove-btn" onclick="removeEntry(this)">Remove</button>
+            `;
+            container.appendChild(div);
+        }
+
+        function addEducation() {
+            const container = document.getElementById('education-container');
+            const index = container.children.length;
+            const div = document.createElement('div');
+            div.className = 'education-entry';
+            div.innerHTML = `
+                <div>
+                    <input type="text" name="education[${index}].degree" placeholder="Degree">
+                    <input type="text" name="education[${index}].major" placeholder="Major">
+                    <input type="number" name="education[${index}].year" placeholder="Year">
+                </div>
+                <button type="button" class="remove-btn" onclick="removeEntry(this)">Remove</button>
+            `;
+            container.appendChild(div);
+        }
+
+        function addProject() {
+            const container = document.getElementById('projects-container');
+            const index = container.children.length;
+            const div = document.createElement('div');
+            div.className = 'project-entry';
+            div.innerHTML = `
+                <div>
+                    <input type="text" name="projects[${index}].name" placeholder="Project Name">
+                    <label>
+                        <input type="checkbox" name="projects[${index}].completed">
+                        Completed
+                    </label>
+                </div>
+                <button type="button" class="remove-btn" onclick="removeEntry(this)">Remove</button>
+            `;
+            container.appendChild(div);
+        }
+
+        function removeEntry(button) {
+            const entry = button.closest('.skill-entry, .education-entry, .project-entry');
+            entry.remove();
+        }
+
+        // Make sections collapsible
+        document.querySelectorAll('legend').forEach(legend => {
+            legend.addEventListener('click', () => {
+                legend.classList.toggle('collapsed');
+                legend.nextElementSibling.classList.toggle('collapsed');
+            });
+        });
+
+        // Initialize with one entry for each section
+        addSkill();
+        addEducation();
+        addProject();
+    </script>
+</body>
+</html>

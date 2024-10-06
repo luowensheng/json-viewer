@@ -1,0 +1,13 @@
+:root {
+}
+
+body {
+    width: 100vw;
+    display: flex;
+    /* align-items: center; */
+
+    flex-direction: row;
+    gap: 20px;
+    justify-content: center;
+
+}
